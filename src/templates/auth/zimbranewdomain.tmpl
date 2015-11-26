@@ -1,0 +1,17 @@
+{% from "macros/fields.tmpl" import render_input_field, render_password_field,
+                                    render_submit %}
+{% extends "shared/layout.tmpl" %}
+
+{% block title %}New Domain{% endblock %}
+
+{% block content %}
+    {% include "shared/side_menu.tmpl" %}
+    <h2 class="header_pages">New domain</h2>
+    <div class="main_content">
+      <form method="POST" id="domain-form">
+        {{ form.hidden_tag() }}
+        {{ render_input_field(form.domainname) }}
+        {{ render_submit() }}
+      </form>
+    </div>
+{% endblock %}

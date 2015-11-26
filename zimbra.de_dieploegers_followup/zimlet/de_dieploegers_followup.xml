@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : de_dieploegers_followup.xml
+    Author     : Dennis Plöger <develop@dieploegers.de>
+    Description:
+        Defer an email until a certain point in time, move it into a
+        folder. Later move it back to inbox.
+-->
+
+<zimlet name="de_dieploegers_followup" version="1.0"
+        description="${msg.ZIMLETDESCRIPTION}">
+  <include>de_dieploegers_followup.js</include>
+  <includeCSS>de_dieploegers_followup.css</includeCSS>
+  <include>json2_min.js</include>
+  <handlerObject>de_dieploegers_followupHandlerObject</handlerObject>
+  <zimletPanelItem label="${msg.ZIMLETNAME}" 
+                   icon="Time">
+      <toolTipText>${msg.ZIMLETDESCRIPTION}</toolTipText>
+  </zimletPanelItem>
+</zimlet>

@@ -1,0 +1,8 @@
+v1.1 [20120402]:
+  [#4] Zimlet doesn't work on Conversations
+  [#3] Info pane is always shown after reload
+  [#2] Missing mandatory check when property editor is closed
+  [#1] Fix zimlet for smaller resolutions
+  
+v1.0 [20120328]:
+  First public release

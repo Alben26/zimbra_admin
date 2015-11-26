@@ -1,0 +1,19 @@
+/* 
+    Document   : de_dieploegers_followup.css
+    Author     : Dennis Ploeger <develop@dieploegers.de>
+    Description:
+        Set an email to followup at a certain point in time, move it into a
+        folder. Later move it back to inbox.
+*/
+
+.de_dieploegers_followup_additionalproperties .DwtInputField-disabled {
+	
+	float: left;
+	
+}
+
+.de_dieploegers_followup_additionalproperties .DwtInputField-disabled + .ZButton {
+	
+	float: right;
+	
+}

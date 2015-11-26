@@ -1,0 +1,35 @@
+{% macro emit_css(bundle) %}
+  {% assets bundle %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+{% endmacro %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    {{ emit_css("css_all") }}
+
+    {% block styles %}
+      {# template-specific styles which are not included in bundle go here #}
+    {% endblock %}
+
+  </head>
+  <body>
+    {% include "shared/_navbar.tmpl" %}
+
+    <div class="container">
+      {% include "shared/flash.tmpl" %}
+      {% block content %}
+        {# page content goes here #}
+      {% endblock %}
+    </div>
+
+
+    {% block scripts %}
+
+      {# template-specific scripts which are not included in bundle go here #}
+    {% endblock %}
+  </body>
+</html>

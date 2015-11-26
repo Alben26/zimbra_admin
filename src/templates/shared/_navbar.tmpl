@@ -1,0 +1,27 @@
+<div class="navbar navbar-default navbar-static-top">
+  <div class="container">
+
+    <div class="navbar-header">
+      <p class="navbar-brand" style="margin-top: 5px;'"><img width="160px" style="background-color: white; border-radius: 5px" alt="Logo Zimbra" src="static/img/zimbra_logo.png"/> Administration</p>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <div class="navbar-collapse collapse" id="navbar-main">
+
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_anonymous() %}
+          <li><a href="{{ url_for('auth.login') }}"><button class="btn btn-success btn-log">Login</button></a></li>
+
+        {% else %}
+              <li class="navbar-brand">{{ current_user.email }}</li>
+              <li><a href="{{ url_for('auth.logout') }}"><button class="btn btn-danger btn-log ">Logout</button></a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </div>
+</div>

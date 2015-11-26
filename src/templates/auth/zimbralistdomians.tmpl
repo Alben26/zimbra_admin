@@ -1,0 +1,29 @@
+{% from "macros/fields.tmpl" import render_input_field, render_password_field,
+                                    render_submit %}
+{% extends "shared/layout.tmpl" %}
+
+{% block title %}Domains list{% endblock %}
+
+{% block content %}
+    {% include "shared/side_menu.tmpl" %}
+    <h2 class="header_pages">List of all domains</h2>
+    <div class="main_content">
+        <table class="table-bordered" >
+            <thead>
+                <tr><th>ID</th><th>Nazev</th><th class="table-action">Akce</th></tr>
+            </thead>
+
+            {% for n in data %}
+              <tr>
+                  <td>{{ n[0] }}</td>
+                  <td class="table-name" style="padding: 10px">{{ n[1] }}</td>
+              {% if not (n[1] == "sspu-opava.local") %}
+                  <td class="table-action"><a href="{{url_for('auth.deletedomainzimbra', id=n[0])}}"><button class="btn btn-danger btn-log ">Smazat</button></a></td>
+              {% else %}
+                  <td class="table-action"><button class="btn btn-no-action btn-log disabled">Smazat</button></td>
+              {% endif %}
+              </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
