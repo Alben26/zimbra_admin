@@ -3,7 +3,7 @@ from flask import (Blueprint, escape, flash, render_template,
 from flask_login import current_user, login_required, login_user, logout_user
 
 from .forms import ResetPasswordForm, EmailForm, LoginForm, RegistrationForm,NewUserForm, EditUserForm, DomainForm,\
-    NewAliasForm, RemoveAliasForm, ChangePasswordForm
+    NewAliasForm, ChangePasswordForm
 from ..data.database import db
 from ..data.models import User, UserPasswordToken
 from ..data.util import generate_random_token
