@@ -7,7 +7,7 @@
 {% block content %}
     {% include "shared/side_menu.tmpl" %}
     <h2 class="header_pages">New domain</h2>
-    <div class="main_content">
+    <div class="main_content col-md-9">
       <form method="POST" id="domain-form">
         {{ form.hidden_tag() }}
         {{ render_input_field(form.domainname) }}

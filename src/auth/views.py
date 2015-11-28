@@ -2,8 +2,8 @@ from flask import (Blueprint, escape, flash, render_template,
                    redirect, request, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 
-from .forms import ResetPasswordForm, EmailForm, LoginForm, RegistrationForm,NewUserForm, EditUserForm, DomainForm,\
-    NewAliasForm, ChangePasswordForm
+from .forms import ResetPasswordForm, EmailForm, LoginForm,NewUserForm, EditUserForm, DomainForm,\
+    NewAliasForm, ChangePasswordForm, DistListForm
 from ..data.database import db
 from ..data.models import User, UserPasswordToken
 from ..data.util import generate_random_token
@@ -180,6 +180,7 @@ def deleteuserzimbra(id):
     if(r):
         flash("Account " + name['GetAccountResponse']['account']['name'], "info")
     return redirect(url_for('auth.listuserzimbra'))
+
 #seznam uzivatelu
 @login_required
 @blueprint.route('/zimbralistusers', methods=['GET', 'POST'])
@@ -203,11 +204,11 @@ def edituserzimbra(id):
         if i['n'] == "displayName":
             displayname = i['_content']
     if form.validate_on_submit():
-        if zm.modifyAccount(id=id):
+        if zm.modifyAccount(id=id, displayname=form.displayname.data):
             for i in r['GetAccountResponse']['account']['a']:
                 if i['n'] == "displayName":
                     print  i['_content']
-            flash("Heslo bylo zmeneno na: ","info")
+            flash("Jmeno bylo zmeneno na: "+displayname,"info")
             return redirect(url_for('public.index'))
     return render_template("auth/zimbraeditaccount.tmpl", displayName=displayname, form=form, id=id)
 
@@ -230,12 +231,16 @@ def changepasswordzimbra(id):
 def newaliaszimbra(id):
     form = NewAliasForm()
     r = zm.getAccount(id=id)
+    for i in r['GetAccountResponse']['account']['a']:
+        if i['n'] == "displayName":
+            displayname = i['_content']
     r = r['GetAccountResponse']['account']['name']
+
     if form.validate_on_submit():
         if zm.addAccountAlias(id=id, alias=form.alias.data+"@"+r.split("@")[1]):
             flash("Alias " + form.alias.data+"@"+r.split("@")[1] +" created in " + r, "info")
-            return redirect(url_for('public.index'))
-    return render_template("auth/zimbranewalias.tmpl", form=form)
+            return redirect(url_for('auth.listaliaszimbra',id=id))
+    return render_template("auth/zimbranewalias.tmpl", form=form,displayName= displayname)
 
 #odstraneni aliasu
 @login_required
@@ -251,4 +256,36 @@ def removealiaszimbra(id,alias):
 @blueprint.route('/zimbralistaliases/<id>', methods=['GET', 'POST'])
 def listaliaszimbra(id):
     r = zm.getAccount(id=id)
-    return render_template("auth/zimbralistaliases.tmpl", r=r['GetAccountResponse']['account']['a'], id=id)
+    for i in r['GetAccountResponse']['account']['a']:
+        if i['n'] == "displayName":
+            displayname = i['_content']
+    return render_template("auth/zimbralistaliases.tmpl", r=r['GetAccountResponse']['account']['a'], id=id,displayName= displayname)
+
+####Distribution listy#####
+
+#vytvoreni
+@login_required
+@blueprint.route('/zimbraadddl', methods=['GET', 'POST'])
+def adddlzimbra():
+        form = DistListForm()
+        if form.validate_on_submit():
+            if zm.createDistributionList(name=form.distlistname.data + "@" + current_user.email.split("@")[1], dynamic=0):
+                flash("Distribution list " + form.distlistname.data +" created", "info")
+                return redirect(url_for('auth.listdlszimbra'))
+        return render_template("auth/zimbranewdl.tmpl", form=form)
+
+@login_required
+@blueprint.route('/zimbradeletedl/<id>', methods=['GET', 'POST'])
+def deletedlzimbra(id):
+        r = zm.deleteDistributionList(id=id)
+        if r:
+            flash("Distribution list " + id +" was deleted", "info")
+        return redirect(url_for('auth.listdlszimbra'))
+
+
+#seznam
+@login_required
+@blueprint.route('/zimbralistdls', methods=['GET', 'POST'])
+def listdlszimbra():
+        r = zm.getAllDistributionLists(name=current_user.email.split("@")[1])
+        return render_template("auth/zimbralistdls.tmpl", data=r)

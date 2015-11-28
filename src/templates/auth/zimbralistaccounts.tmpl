@@ -4,12 +4,17 @@ render_submit %}
     {% block title %}Accounts list{% endblock %}
     {% block content %}
         {% include "shared/side_menu.tmpl" %}
-        <h2 class="header_pages">List of all accouts</h2>
-            <div class="main_content">
+        <h2 class="header_pages">List of users</h2>
+            <div class="main_content col-md-9">
                 <table class="table-bordered" >
                     <thead>
                     <tr ><th>Ucet</th><th>Jmeno</th><th>Kvota (MB)</th><th colspan="2" class="table-action">Akce</th></tr>
                     </thead>
+                    {% if not data %}
+                        <tr>
+                            <td colspan="4">NO DATA</td>
+                        </tr>
+                    {% endif %} 
                         {% set x = 0 %}
                         {% for n in data %}
                             {% if (n[1].split("@")[1] == current_user.email.split("@")[1] or current_user.email.split("@")[1] == "sspu-opava.local") %}

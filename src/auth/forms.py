@@ -136,3 +136,10 @@ class DomainForm(Form):
         InputRequired(message="You can't leave this empty")
     ])
 ###
+
+class DistListForm(Form):
+    distlistname = TextField('Choose your name for distributionlist', validators=[
+        #Predicate(safe_characters, message="Please use only letters (a-z) and numbers"),
+        Length(min=3, max=30, message="Please use between 6 and 30 characters"),
+        InputRequired(message="You can't leave this empty")
+    ])

@@ -6,8 +6,8 @@
 
 {% block content %}
     {% include "shared/side_menu.tmpl" %}
-    <h2 class="header_pages">New account</h2>
-    <div class="main_content">
+    <h2 class="header_pages">New user</h2>
+    <div class="main_content col-md-9">
       <form method="POST" id="register-form">
         {{ form.hidden_tag() }}
         {{ render_input_field(form.email) }}

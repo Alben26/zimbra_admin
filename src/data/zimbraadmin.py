@@ -283,8 +283,6 @@ class ZimbraManager:
                        "domain": kwargs.get('domain')
                },
                "urn:zimbraAdmin"
-
-
            )
         else:
             response = self.request(
@@ -295,8 +293,6 @@ class ZimbraManager:
                            "allServers": kwargs.get('allServers')
                    },
                    "urn:zimbraAdmin"
-
-
             )
         return response
 
@@ -312,6 +308,65 @@ class ZimbraManager:
                "urn:zimbraAdmin"
            )
            return response
+
+    def createDistributionList(self, *args, **kwargs):
+        response = self.request(
+            'CreateDistributionListRequest',
+            {
+                "name": kwargs.get('name'),
+                "dynamic": kwargs.get('dynamic')
+            },
+            "urn:zimbraAdmin"
+        )
+        if 'CreateDistributionListResponse' in response:
+            return True
+        return response
+
+    def getAllDistributionLists(self,*args,**kwargs):
+
+        response = self.request(
+            'GetAllDistributionListsRequest',
+            {
+                "domain": {
+                    'by': 'name',
+                    '_content': kwargs.get('name')
+                }
+            },
+            "urn:zimbraAdmin"
+        )
+        if 'dl' in response['GetAllDistributionListsResponse']:
+            return [ (i['id'],i['name']) for i in response['GetAllDistributionListsResponse']['dl'] ]
+        else:
+            return ""
+
+    def deleteDistributionList(self, *args, **kwargs):
+        distributionlistinfo = self.getDistributionList(*args, **kwargs)
+        if 'GetDistriputionListResponse' in distributionlistinfo:
+            response = self.request(
+                'DeleteDistributionListRequest',
+                {
+                    "id": distributionlistinfo['GetDistributionListResponse']['dl']['id'],
+                },
+                "urn:zimbraAdmin"
+            )
+            if 'DeleteDistributionListResponse' in response:
+                return True
+            return response
+        else:
+            return distributionlistinfo
+
+    def getDistributionList(self, *args, **kwargs):
+        response = self.request(
+            'GetDistributionListRequest',
+            {
+                "dl": {
+                    'by': 'id',
+                    '_content': kwargs.get('id')
+                },
+            },
+            "urn:zimbraAdmin"
+        )
+        return response
 
 #zm=ZimbraManager(url=app_config.ZIMBRA_URL,admin=app_config.ZIMBRA_ADMIN,password=app_config.ZIMBRA_ADMIN_PASSWORD)
 zm=ZimbraManager(url="https://192.168.22.110:7071/service/admin/soap",admin="admin",password="Zimbra2015")
